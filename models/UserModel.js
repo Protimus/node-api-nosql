@@ -1,10 +1,10 @@
-class UserModel {
+var debug = require('debug')('api:model');
 
-    UserModel(mongo){
-        this.mongo = mongo;
-    }
+function UserModel(mongo) {
+    this.mongo = mongo;
+}
     
-    find(query, callback){
+    UserModel.prototype.find = function(query, callback){
         this.mongo.collection('users').find(query, callback);
     };
 
@@ -26,6 +26,5 @@ class UserModel {
         var query = { _id: this.mongo.ObjectId(_id) };
         this.mongo.collection('users').remove(query, callback);
     }
-}
 
 module.exports = new UserModel(mongo);

@@ -1,7 +1,9 @@
 var express = require('express');
 var cors = require('cors');
-var UserController = require('../controllers/UserController');
 var router = express.Router();
+var mongo = require('../db/mongo');
+var UserModel = require('../models/UserModel')(mongo);
+var UserController = require('../controllers/userController')(UserModel);
 
 var whitelist = ['127.0.0.1']
 var corsOptions = {
@@ -15,7 +17,7 @@ var corsOptions = {
 }
 
 /* GET users listing. */
-router.get('/', UserController.getAll); 
+router.get('/', UserController.getAll.bind(UserController)); 
 
 /* GET users listing with cors blocked. 
 router.get('/', cors(corsOptions), function(req, res, next) {
@@ -23,15 +25,15 @@ router.get('/', cors(corsOptions), function(req, res, next) {
 });*/
 
 /* GET user. */
-router.get('/:_id', UserController.getById); 
+router.get('/:_id', UserController.getById.bind(UserController)); 
 
 /* POST user. */
-router.post('/', UserController.create);
+router.post('/', UserController.create.bind(UserController));
 
 /* PUT user. */
-router.put('/:_id', UserController.update);
+router.put('/:_id', UserController.update.bind(UserController));
 
 /* DELETE user. */
-router.delete('/:_id', UserController.remove);
+router.delete('/:_id', UserController.remove.bind(UserController));
 
 module.exports = router, cors;
