@@ -1,5 +1,6 @@
 var express = require('express');
 var cors = require('cors');
+var UserController = require('../controllers/UserController');
 var router = express.Router();
 
 var whitelist = ['127.0.0.1']
@@ -14,29 +15,23 @@ var corsOptions = {
 }
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('Got a GET request at /users');
-}); 
+router.get('/', UserController.getAll); 
 
 /* GET users listing with cors blocked. 
 router.get('/', cors(corsOptions), function(req, res, next) {
   res.send('Got a GET request at /users/cors');
 });*/
 
+/* GET user. */
+router.get('/:_id', UserController.getById); 
+
 /* POST user. */
-router.post('/', function (req, res) {
-  res.send('Got a POST request at /users');
-});
+router.post('/', UserController.create);
 
 /* PUT user. */
-router.put('/', function (req, res) {
-  res.send('Got a PUT request at /users');
-});
+router.put('/:_id', UserController.update);
 
 /* DELETE user. */
-router.delete('/', function (req, res) {
-  res.send('Got a DELETE request at /users');
-});
-
+router.delete('/:_id', UserController.remove);
 
 module.exports = router, cors;
