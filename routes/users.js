@@ -1,10 +1,27 @@
 var express = require('express');
+var cors = require('cors');
 var router = express.Router();
+
+var whitelist = ['127.0.0.1']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('Got a GET request at /users');
-});
+}); 
+
+/* GET users listing with cors blocked. 
+router.get('/', cors(corsOptions), function(req, res, next) {
+  res.send('Got a GET request at /users/cors');
+});*/
 
 /* POST user. */
 router.post('/', function (req, res) {
@@ -22,4 +39,4 @@ router.delete('/', function (req, res) {
 });
 
 
-module.exports = router;
+module.exports = router, cors;
